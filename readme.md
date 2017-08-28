@@ -16,4 +16,4 @@ docker run -p 8080:8080 sql-autocomoplete-server:0.1-SNAPSHOT #use -d for detach
 
 2. v1/tables/
 
-3. v0/tables/:tableName
+3. v1/tables/:tableName
