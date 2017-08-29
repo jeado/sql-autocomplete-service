@@ -15,7 +15,7 @@ trait SuggestionV1Routes extends JsonSupport {
 
   lazy val routes: Route =
     pathPrefix("v1") {
-      pathEnd {
+      (pathEnd | pathSingleSlash) {
         concat(
           get {
             val d = List("SELECT", "INSERT", "UPDATE", "DELETE").map(w => Suggestion(w, w, 1, "DML"))
@@ -25,19 +25,19 @@ trait SuggestionV1Routes extends JsonSupport {
           }
         )
       } ~
-        pathPrefix("tables") {
-          concat(
-            (pathEnd & get) {
-              complete(
-                List("FROM a1", "FROM a2").map(w => Suggestion(w, w, 1, "TABLE"))
-              )
-            },
-            (path(Remaining) & get) { tableName =>
-              complete(
-                List("column1", "column2", "column3", "column4").map(w => Suggestion(w, w, 1, "ATTRIBUTES"))
-              )
-            }
-          )
-        }
+      pathPrefix("tables") {
+        concat(
+          (pathEnd & get) {
+            complete(
+              List("FROM a1", "FROM a2").map(w => Suggestion(w, w, 1, "TABLE"))
+            )
+          },
+          (path(Remaining) & get) { tableName =>
+            complete(
+              List("column1", "column2", "column3", "column4").map(w => Suggestion(w, w, 1, "ATTRIBUTES"))
+            )
+          }
+        )
+      }
     }
 }
